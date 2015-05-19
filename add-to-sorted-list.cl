@@ -1,0 +1,6 @@
+(let ((test nil))
+	(setf test (list 3 3 3 5 2 1 1 22 4 55 6 0))
+	(setq test (sort test #'<))
+	(print test)
+	(merge 'list test (list 8) #'<)
+	(print test))
