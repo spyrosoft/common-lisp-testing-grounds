@@ -1,16 +1,8 @@
 ;; Run `ls' - output only
 
-(let ((ls-process (run-program "/bin/ls" '()
-															 :wait nil
-															 :output :stream)))
-	(unwind-protect
-			 (with-open-stream (ls-process-stream (process-output ls-process))
-				 (loop
-						:for line := (read-line ls-process-stream nil nil)
-						:while line
-						:collect line))
-		(when ls-process (process-close ls-process))))
-
+(with-output-to-string (output-stream)
+	(run-program "/bin/ls" '()
+							 :output output-stream))
 
 ;; Run `sort' - input and output
 
