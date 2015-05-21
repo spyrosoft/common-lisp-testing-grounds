@@ -1,21 +1,26 @@
-;; Source:
-;; http://compgroups.net/comp.lang.lisp/redirecting-program-output-with-sbcl-s-run-pro/109338
+;; Run `ls' - output only
 
-(defun piping-demonstration ()
-  (let ((ls-process (run-program "/bin/ls" '()
-           :wait nil
-           :output :stream)))
-    (unwind-protect
-   (with-open-stream (s (process-output ls-process))
-     (let ((grep-process (run-program "/usr/bin/grep" '("a")
-            :input s
-            :output :stream)))
-       (when grep-process
-         (unwind-protect
-        (with-open-stream (o (process-output grep-process))
-          (loop
-       :for line := (read-line o nil nil)
-       :while line
-       :collect line))
-     (process-close grep-process)))))
-      (when ls-process (process-close ls-process)))))
+(let ((ls-process (run-program "/bin/ls" '()
+															 :wait nil
+															 :output :stream)))
+	(unwind-protect
+			 (with-open-stream (ls-process-stream (process-output ls-process))
+				 (loop
+						:for line := (read-line ls-process-stream nil nil)
+						:while line
+						:collect line))
+		(when ls-process (process-close ls-process))))
+
+
+;; Run `sort' - input and output
+
+(let ((text-to-sort "bananas
+apples
+veggies
+zebras"))
+	(with-input-from-string (input-stream text-to-sort)
+		(with-output-to-string (output-stream)
+			(run-program "/bin/sort" '()
+									 :input input-stream
+									 :output output-stream)
+      output-stream)))
