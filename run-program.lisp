@@ -36,4 +36,4 @@ zebras"))
 											 :while line
 											 :collect line))
 							 (process-close grep-process)))))
-		(when ls-process (process-close ls-process)))))
+		(when ls-process (process-close ls-process))))
