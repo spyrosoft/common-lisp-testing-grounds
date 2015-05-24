@@ -4,3 +4,11 @@
 
 (print (jsown:parse input-json))
 
+;; Limit which fields are parsed into the resulting object
+(print (jsown:parse input-json "integer" "boolean"))
+
+;; Create a new object
+(jsown:new-js
+	("pizza" "pepperoni")
+	("pie" "apple")
+	("one-hundred" (+ 99 1)))
