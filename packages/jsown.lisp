@@ -16,6 +16,10 @@
 ;; Limit which fields are parsed into the resulting object
 (print (jsown:parse input-json "integer" "boolean"))
 
+;; Supply the contents of a list as limiting fields
+(defvar json-input-and-desired-keys (list input-json "integer" "boolean"))
+(print (apply 'jsown:parse json-input-and-desired-keys))
+
 ;; Encode to string
 ;; Note that boolean false is converted to '(), then back to []
 (jsown:to-json parsed-input-json)
@@ -35,3 +39,7 @@
 	("pizza" "pepperoni")
 	("pie" "apple")
 	("one-hundred" (+ 99 1)))
+
+;; Demonstrate parsing bad JSON input results in an empty object
+(defvar bad-input-json "integer:100, \"string\":\"string\", \"double-float\":1.234567890123456789, \"boolean\": false, \"dimensional-array\": [1,2,3,[1,2,3]]}")
+(print (jsown:parse bad-input-json "integer" "boolean"))
