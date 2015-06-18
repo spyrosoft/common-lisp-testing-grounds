@@ -1,0 +1,5 @@
+(defun read-file-into-string (file-path)
+	(with-open-file (file-stream file-path)
+		(let ((file-contents (make-string (file-length file-stream))))
+			(read-sequence file-contents file-stream)
+			file-contents)))
