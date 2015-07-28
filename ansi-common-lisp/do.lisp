@@ -11,3 +11,21 @@
 			 (sum 0 (+ counter sum)))
 			;; At the end of each iteration, check to see if `counter' > `number', if so, return `sum'
 			((> counter number) sum)))
+
+
+;; From ANSI Common Lisp by Paul Graham
+;; Demonstrating the difference between do and do*
+(let ((x ' a ))
+  (do ((x 1 (+ x 1))
+       (y x x))
+      ((> x 5))
+    (format t "(~A ~A) " x . y)))
+;(1 A) (2 1) (3 2) (4 3) (5 4)
+;NIL
+
+(do* ((x 1 (+ x 1))
+      (y x x))
+     ((> x 5))
+  (format t "(~A ~A) " x y))
+;(1 1) (2 2) (3 3) (4 4) (5 5)
+;NIL
