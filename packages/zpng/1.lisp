@@ -1,3 +1,5 @@
+(ql:quickload :zpng)
+
 (defpackage :try-out-zpng
 	(:use :common-lisp :zpng)
 	(:export :generate-png))
