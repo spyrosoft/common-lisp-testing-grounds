@@ -56,6 +56,10 @@
 (sum-elements-of-single-float-array example-single-float-array)
 
 
+;; When possible use simple vectors as they block out memory in and of themselves as opposed to using pointers
+;; Upon doing so, use svref rather than aref for a speed boost
+
+
 ;; Excerpt from ANSI Common Lisp regarding the affects of cons on efficiency:
 ;; In Lisp implementations with bad garbage collectors, programs that cons a lot tend to run slowly. Until recently, most Lisp implementations have had bad garbage collectors, and so it has become a tradition that efficient programs should cons as little as possible. Recent developments have turned this conventional wisdom on its head. Some implementations now have such sophisticated garbage collectors that it is faster to cons up new objects and throw them away than it is to recycle them.
 ;; Whether consing less will make your programs run faster depends on the implementation. Again, the best advice is to try it and see.
