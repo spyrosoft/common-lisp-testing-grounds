@@ -1,21 +1,20 @@
-(defun ^ (a b)
-  (do ((x 1 (* x a))
-       (y 0 (+ y 1)))
-      ((= y b) x)))
-
-
 (defun sum-from-zero (number)
-	;; Set `counter' to 1, and for each iteration after to itself plus 1
-	(do ((counter 1 (+ counter 1))
-			 ;; Set `sum' to 0, and for each iteration after to itself plus sum
+  ;; Note that multiple iterators can be instantiated
+	;; Set `counter' to 1
+  ;; For each subsequent iteration set `counter' to itself plus 1
+	(do ((counter 1 (1+ counter))
+			 ;; Set `sum' to 0
+       ;; For each subsequent iteration set `sum' to itself plus `counter'
 			 (sum 0 (+ counter sum)))
-			;; At the end of each iteration, check to see if `counter' > `number', if so, return `sum'
+			;; At the end of each iteration, check to see if `counter' > `number'
+      ;; Until the test returns true continue to iterate
+      ;; When it returns true, return `sum'
 			((> counter number) sum)))
 
 
 ;; From ANSI Common Lisp by Paul Graham
 ;; Demonstrating the difference between do and do*
-(let ((x ' a ))
+(let ((x 'a))
   (do ((x 1 (+ x 1))
        (y x x))
       ((> x 5))
