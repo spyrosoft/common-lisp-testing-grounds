@@ -30,6 +30,15 @@
 (new-union '(a b c) '(b a d))
 ;; (A B C D)
 
+;; Note: it turns out that what he meant is that each of the lists from left to right need to preserve their original order. Not to parse both lists at the same time. Which makes this problem WAY easier:
+
+(defun new-union (list1 list2)
+  (let ((list1-reversed (reverse list1)))
+    (dolist (list2-item list2)
+      (if (not (member list2-item list1-reversed))
+          (push list2-item list1-reversed)))
+    (reverse list1-reversed)))
+
 
 
 ;; 3. Define a function that takes a list and returns a list indicating the number of times each (eql) element appears, sorted from most common element to least common:
