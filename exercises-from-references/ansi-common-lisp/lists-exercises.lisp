@@ -54,7 +54,7 @@
 (defun pos+ (list)
   "Not tail optimized"
   (labels ((recursive-pos+ (list current-position)
-             (if (not list)
+             (if (null list)
                  list
                  (cons (+ current-position (first list))
                        (recursive-pos+ (rest list) (1+ current-position))))))
@@ -63,7 +63,7 @@
 (defun pos+ (list)
   "Tail optimized"
   (labels ((recursive-pos+ (unprocessed-list processed-list current-position)
-             (if (not unprocessed-list)
+             (if (null unprocessed-list)
                  processed-list
                  (progn
                    (push (+ current-position (first unprocessed-list)) processed-list)
@@ -76,7 +76,7 @@
   (let ((new-list '()))
     (do ((position 0 (1+ position))
          (list-iterator list (rest list-iterator)))
-        ((not list-iterator))
+        ((null list-iterator))
       (push (+ (first list-iterator) position) new-list))
     (reverse new-list)))
 
@@ -93,3 +93,22 @@
 
 
 ;; 9. Write a program to find the longest finite path through a network represented as in Section 3.15. The network may contain cycles.
+(defun longest-path (start goal network)
+  (depth-first-search goal (list (list start)) network))
+
+(defun depth-first-search (goal stack network)
+  (if (null stack)
+      nil
+      (let* ((path (first stack))
+             (node (car path)))
+          (if (eql node goal)
+              (reverse path)
+              (depth-first-search goal
+                                  (append (new-paths path node network)
+                                          (cdr stack))
+                                  network)))))
+
+(defun new-paths (path node network)
+  (mapcar #'(lambda (new-path)
+              (cons new-path path))
+          (cdr (assoc node network))))
