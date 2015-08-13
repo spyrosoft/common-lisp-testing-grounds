@@ -7,8 +7,6 @@
 (how-many-arguments 'a 'b 'c 'd 'e 'f)
 ;; 6
 
-;; There was mention of using macros to remove the necessity of consing here to the end of identifying how many &rest arguments were passed. Is this true???? How the what?
-
 
 ;; 4. Modify most to return, as two values, the two highest-scoring elements of a list.
 ;; (defun most (fn lst)
@@ -23,28 +21,26 @@
 ;;                     max  score))))
 ;;         (values wins max))))
 
-;; What are these variables for? wins? obj?
-;; I have no idea what most is supposed to do. The following errors out:
+;; What is the wins variables for?
+;; I have no idea what the most function is supposed to do. The following errors out:
 (most #'> '(1 2 3 4))
 
-;; So I am going to interpret this question as expecting a comparison function and a list of things to compare
+;; So I am going to interpret this question as expecting a comparison function and a list of things to find the two most of
 (defun two-most (comparison-function list)
-  (let ((two-most '(nil nil)))
+  (let ((top-most nil) (second-most nil))
     (dolist (item list)
-      (cond ((null (first two-most))
-             (setf (first two-most) item)
-             (print two-most))
+      (cond ((null top-most)
+             (setq top-most item))
             (t
-             (if (funcall comparison-function item (first two-most))
+             (if (funcall comparison-function item top-most)
                  (progn
-                   (setf (second two-most) (first two-most))
-                   (setf (first two-most) item))
-                 (if (null (second two-most))
-                     (setf (second two-most) item)
-                     (when (funcall comparison-function item (second two-most))
-                       (setf (second two-most) item)))))))
-    (print two-most)
-    (apply #'values two-most)))
+                   (setq second-most top-most)
+                   (setq top-most item))
+                 (if (null second-most)
+                     (setq second-most item)
+                     (when (funcall comparison-function item second-most)
+                       (setq second-most item)))))))
+    (values top-most second-most)))
 
 (two-most #'> '(2 8 3 7 4 6 5))
 
@@ -109,5 +105,3 @@
 (funcall example-frugal 0)
 
 ;; Cooool!! And useful.
-
-
