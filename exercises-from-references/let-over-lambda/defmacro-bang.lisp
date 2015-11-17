@@ -38,4 +38,3 @@
 
 (defun o!-symbol-to-g!-symbol (o!-symbol)
   (symb "G!" (subseq (symbol-name o!-symbol) 2)))
-

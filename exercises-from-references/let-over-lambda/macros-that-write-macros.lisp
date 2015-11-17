@@ -18,9 +18,9 @@
 
 (defmacro! defunits (quantity base-unit &rest units)
   `(defmacro ,(symb 'unit-of- quantity)
-       (g!-unit-value g!-unit)
-     `(* ,g!-unit-value
-         ,(case g!-unit
+       (,g!-unit-value ,g!-unit)
+     `(* ,,g!-unit-value
+         ,(case ,g!-unit
                 ((,base-unit) 1)
                 ,@(mapcar (lambda (x)
                             `((,(car x))
