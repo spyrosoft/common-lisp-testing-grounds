@@ -1,8 +1,8 @@
 (ql:quickload 'zpng)
 
-(Defpackage :ray-tracer
+(defpackage :ray-tracer
 	(:use :common-lisp :zpng)
-	(:export :ray-test))
+	(:export :ray-trace))
 
 (in-package :ray-tracer)
 
@@ -140,7 +140,13 @@
 ;; --------------------PNG Utils--------------------
 
 
-(defun ray-test (&optional (res 1))
+(defun ray-trace (spheres &optional (resolution 1))
+  "Spheres come in form (x y z radius color)"
+  (setf *ray-trace-world* nil)
+  (mapcar (lambda (sphere) (apply #'defsphere sphere)) spheres)
+  (tracer #P"/tmp/spheres.png" resolution))
+
+(defun ray-trace-test (&optional (resolution 1))
   (setf *ray-trace-world* nil)
   (defsphere 0 -300 -1200 200 .8)
   (defsphere -80 -100 -1200 200 .8)
@@ -150,4 +156,4 @@
     (do ((z 2 (1+ z)))
         ((> z 7))
       (defsphere (* x 200) 300 (* z -400) 40 .75)))
-  (tracer #P"/tmp/spheres.png" res))
+  (tracer #P"/tmp/spheres.png" resolution))
