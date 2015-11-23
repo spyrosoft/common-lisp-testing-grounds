@@ -11,13 +11,24 @@
       )))
 
 
-(defun memo (f)
+(defmacro until (test &rest body)
+  `(do ()
+       (,test)
+     ,@body))
+
+(defmacro while (test &rest body)
+  `(do ()
+       ((not ,test))
+     ,@body))
+
+
+(defun memoize (function-to-memoize)
   (let ((cache (make-hash-table :test #'equalp)))
     (lambda (&rest args)
       (or (gethash args cache)
           (setf (gethash args cache)
-                (apply f args))))))
+                (apply function-to-memoize args))))))
 
-(defmacro defmemo (name args &body body)
+(defmacro defmemoize (name args &body body)
  `(setf (symbol-function ',name) 
-        (memo (lambda ,args ,@body))))
+        (memoize (lambda ,args ,@body))))
