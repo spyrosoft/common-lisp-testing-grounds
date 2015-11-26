@@ -58,20 +58,23 @@
     (if source (rec source nil) nil)))
 
 
-(defvar *time-function-iterations* 1000000)
+(defvar *time-function-iterations* 100000)
+(defvar *list-to-group*)
+(setq *list-to-group*
+      (iter (for i from 1 to 1e5)
+            (collect i)))
 
 (defmacro call-group-function-over-and-over (which-group)
   `(dotimes (i *time-function-iterations*)
-     (,which-group '(1 2 3 4 5 6 7 8) 2)
+     (,which-group *list-to-group* 2)
      ))
 
-(print (group-dolist '(1 2 3 4 5) 2))
-(print (group-iterate '(1 2 3 4 5) 2))
-(print (group-loop '(1 2 3 4 5) 2))
-(print (group-recursion '(1 2 3 4 5) 2))
-
 (defun demonstrate-each-group-function ()
+  (print 'group-dolist)
   (time (call-group-function-over-and-over group-dolist))
+  (print 'group-iterate)
   (time (call-group-function-over-and-over group-iterate))
+  (print 'group-loop)
   (time (call-group-function-over-and-over group-loop))
+  (print 'group-recursion)
   (time (call-group-function-over-and-over group-recursion)))
