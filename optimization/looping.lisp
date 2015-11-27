@@ -58,10 +58,11 @@
     (if source (rec source nil) nil)))
 
 
-(defvar *time-function-iterations* 100000)
+(defvar *time-function-iterations*)
+(setq *time-function-iterations* 100000)
 (defvar *list-to-group*)
 (setq *list-to-group*
-      (iter (for i from 1 to 1e5)
+      (iter (for i from 1 to 4000)
             (collect i)))
 
 (defmacro call-group-function-over-and-over (which-group)
