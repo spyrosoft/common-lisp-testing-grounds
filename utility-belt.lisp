@@ -22,6 +22,23 @@
      ,@body))
 
 
+(defun unflatten-dimensional-list (list-to-unflatten second-dimension)
+  "Similar to Paul Graham's `group' - takes a list and pushes n items into sub lists until there are no more items in the list."
+  (let ((unflattened-list '()) (current-dimension-list '()) (i 1))
+    (dolist (item list-to-unflatten)
+            (if (= second-dimension i)
+                (progn
+                  (setq i 0)
+                  (push item current-dimension-list)
+                  (print unflattened-list)
+                  (push (nreverse current-dimension-list) unflattened-list)
+                  (setq current-dimension-list '()))
+                (push item current-dimension-list))
+            (incf i))
+    (when (not (null current-dimension-list))
+      (push (nreverse current-dimension-list) unflattened-list))
+    (nreverse unflattened-list)))
+
 (defun memoize (function-to-memoize)
   (let ((cache (make-hash-table :test #'equalp)))
     (lambda (&rest args)
